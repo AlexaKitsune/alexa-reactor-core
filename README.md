@@ -1,5 +1,9 @@
 # JavaScript Utilities Library
 
+<p align="center">
+    <img src="https://raw.githubusercontent.com/AlexaKitsune/alexa-reactor-core/main/img/alexa.svg" width="50%"/>
+</p>
+
 This is a JavaScript utilities library that contains a set of useful functions and custom functional tags for common tasks in web development. It can be used in web projects to improve efficiency and facilitate development.
 
 # Install
