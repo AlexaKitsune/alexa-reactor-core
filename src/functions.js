@@ -128,8 +128,7 @@ function detectDrag(where_, direction_, function_, sensitivity_ = 0) {
                     function_();
                     verticalPosition = event.clientY;
                 }
-
-            //verticalPosition = event.clientY;
+                
         }
     });
 
@@ -283,6 +282,56 @@ function draggableElement(element_, dropZone_=undefined, functionDropHover_=unde
     });
 }
 
+/**
+ * Draws a line (an <hr> element) between two elements in the DOM.
+ * @param {*} element1_ - Element where line starts.
+ * @param {*} element2_ - Element where line ends.
+ * @returns {object} - The <hr> element.
+ */
+function connectorLine(element1_, element2_){
+    const elementA = () => typeof element1_ == "string" ? document.querySelector(element1_).getBoundingClientRect() : element1_.getBoundingClientRect();
+    const elementB = () => typeof element2_ == "string" ? document.querySelector(element2_).getBoundingClientRect() : element2_.getBoundingClientRect();
+    const A = () => {
+        return {
+            x: elementA().left + ((elementA().right - elementA().left) / 2),
+            y: elementA().top + ((elementA().bottom - elementA().top) / 2)
+        }
+    };
+    const B = () => {
+        return {
+            x: elementB().left + ((elementB().right - elementB().left) / 2),
+            y: elementB().top + ((elementB().bottom - elementB().top) / 2)
+        }
+    };
+    const lineLength = () => Math.sqrt(
+        Math.pow((B().x - A().x), 2)
+        +
+        Math.pow((B().y - A().y), 2)
+    );
+    const lineAngle = () => Math.atan(
+        (A().y - B().y) / (A().x - B().x)
+    );
+
+    const line = document.createElement("hr");
+    line.style.position = "absolute";
+    line.style.margin = 0;
+    line.style.transformOrigin = "center left";
+    line.style.top = A().y + "px";
+    line.style.left = A().x + "px";
+    line.style.width = lineLength() + "px";
+    line.style.transform = `rotate(${lineAngle()}rad)`;
+
+    document.body.append(line);
+    addEventListener("resize", (event) => {
+        line.style.top = A().y + "px";
+        line.style.left = A().x + "px";
+        line.style.width = lineLength() + "px";
+        line.style.transform = `rotate(${lineAngle()}rad)`;
+    });
+
+    return line;
+}
+
 module.exports = {
-    DOMready, element, elements, stylize, clicked, getStyle, getInnerHTML, setStyles, keyByIndex, valueByIndex, keyByValue, Second, Minute, Hour, Day, Month, Year, Century, Millennium, range, rand, withEnterTriggerClick, withKeyTriggerFunction, detectDrag, simulation360, detectCollision, draggableElement 
+    DOMready, element, elements, stylize, clicked, getStyle, getInnerHTML, setStyles, keyByIndex, valueByIndex, keyByValue, Second, Minute, Hour, Day, Month, Year, Century, Millennium, range, rand, withEnterTriggerClick, withKeyTriggerFunction, detectDrag, simulation360, detectCollision, draggableElement, connectorLine 
 }

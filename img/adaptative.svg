@@ -10,7 +10,18 @@
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   xmlns:svg="http://www.w3.org/2000/svg">
+      <style>
+        @media (prefers-color-scheme: light) {
+            path { fill: black !important; }
+            circle { fill:#000000 !important;fill-opacity:1 !important; }
+        }
+        @media (prefers-color-scheme: dark) {
+            path { fill: white !important; }
+            circle { fill:#FFFFFF !important;fill-opacity:1 !important; }
+        }
+    </style>
+   <defs
      id="defs1"><inkscape:path-effect
        effect="powerclip"
        id="path-effect419"

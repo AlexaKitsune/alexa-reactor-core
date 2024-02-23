@@ -1,7 +1,7 @@
 # JavaScript Utilities Library
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/AlexaKitsune/alexa-reactor-core/main/img/alexa.svg" width="50%"/>
+    <img src="https://raw.githubusercontent.com/AlexaKitsune/alexa-reactor-core/main/img/adaptative.svg" width="50%"/>
 </p>
 
 This is a JavaScript utilities library that contains a set of useful functions and custom functional tags for common tasks in web development. It can be used in web projects to improve efficiency and facilitate development.
@@ -18,9 +18,6 @@ You can use these functions by importing the module into your project as follows
 
 ```javascript
 import * as arc from 'alexa-reactor-core';
-
-// Call htjs function to analize and processing the HTML tags.
-arc.htjs();
 ```
 
 Or import each function:
@@ -28,9 +25,8 @@ Or import each function:
 ```js
 import { element, htjs } from 'alexa-reactor-core';
 
-// Call htjs and element.
+// Call element function.
 element("#myElement").value = "Some value";
-htjs();
 ```
 
 If you are not using a node server, or working on HTML / JS vanilla, you can import the js files directly this way:
@@ -171,6 +167,7 @@ This function receives the following arguments:
 
 The function will be executed multiple times while the element is dragged, so `sensitivity_` allow us to change the frequency of those executions.
 
+This function doesn't drag or move anything in the DOM; it only detects mouse dragging.
 
 ### 3D/360 Model Simulation
 
@@ -221,168 +218,35 @@ It receives the following arguments:
 - `functionDropHover_`: Function that will execute while the draggable element is over the drop zone, but not released yet.
 - `functionDropReleased_`: Function that will execute when the draggable element is finally released on the drop zone.
 
-
-# HTML Parser for JavaScript
-
-This is a JavaScript module that provides functions for parsing and processing HTML elements with custom attributes. These functions can be useful for advanced manipulation and processing of HTML content in web applications.
-
-> [!WARNING]  
-> For the moment, \<if> and \<for> tags only allow one level of nesting depth.
-
-## Available Functions
-
-
-### If conditional
-
-```html
-<if cond="">
-    <!--condition true-->
-<else/>
-    <!--condition false-->
-</if>
-```
-
-This tag evaluates the condition in `cond` y muestra el contenido correspondiente.
-
-The `<else/>` tag is optional; if the condition is false, nothing will be rendered.
-
-*Example:*
-
-```html
-<script>
-    const age1 = 25;
-    const membership = false;
-</script>
-
-<if cond="age1 > 18">
-    <b>You can access.</b>
-</if>
-
-<if cond="membership == true">
-    <b>Access granted.</b>
-<else/>
-    <b>Access denied.</b>
-</if>
-```
-
-This will render something like this:
-
-**You can access**
-
-**Access denied**
-
-### For loop
-
-```html
-<for init="">
-    <!-- loop -->
-</for>
-```
-
-This tag allows you to render content in a way similar to a for loop. You can write some javascript between `{{}}` into the tag and it will be executed.
-
-The attributes it receives are all required, but they will depend on the type of loop you want to execute.
-
-**Classic for loop**
-
-To execute a classic for loop, it requires the following attributes:
-
-- `init`: Variable declaration or initialization.
-- `cond`: Halting condition. 
-- `incr`: Increment.
-
-**For in and For of**
-
-For executing a "for of" loop, you need the following attributes:
-
-- `init`: The name of the variable used inside `{{}}` within the tag, representing the current element in the array being iterated.
-- `off`: Object or array to loop through.
-
-*Example:*
-
-```html
-<script>
-    const GREETINGS = ["Hola", "Hello", "Konnichiwa"];
-</script>
-
-<!-- Classic for loop -->
-<for init="i = 0" cond="i < 5" incr="i++">
-    <p>Iteration {{i}}</p>
-</for>
-
-<!-- For in -->
-<for init="item" in="ANIMALS">
-    <p>There are {{item}} animals</p>
-</for>
-
-<!-- For of -->
-<for init="item" of="ANIMALS">
-    <p>Character's species is {{item}}</p>
-</for>
-```
-
-This will render:
-
-Iteration 0<br/>
-Iteration 1<br/>
-Iteration 2<br/>
-Iteration 3<br>
-Iteration 4<br/>
-
-There are 0 animals<br/>
-There are 1 animals<br/>
-There are 2 animals<br/>
-
-Character's species is dog<br/>
-Character's species is cat<br/>
-Character's species is fox<br/>
-
-
-### Assistive reading text
-
-```html
-<assistext>
-    <!-- TEXT - Lorem ipsum dolor sit amet... -->
-</assistext>
-```
-
-This tag renders a text where the first few letters of words are emphasised by using bold type.
-
-*Example:*
-
-```html
-<assistext>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate, aperiam?
-</assistext>
-```
-
-This will render something like this:
-
-<div><b></b> <b>Lo</b>rem <b>ip</b>sum <b>do</b>lor <b>s</b>it <b>am</b>et <b>conse</b>ctetur <b>adipi</b>sicing <b>el</b>it. <b>Cupid</b>itate, <b>aper</b>iam? <b></b></div>
-
-
 ### Connection line between two elements
 
-```html
-<connector-line from="" to=""> </connector-line>
+```js
+connectorLine(element1_, element2_)
 ```
 
 This tag creates a visual connection line between two elements of the DOM.
 
 It receives the following attributes:
 
-- `from`: The id of the first element to connect.
-- `to`: The id of the second element to connect.
+It receives the following arguments:
+
+- `element1_`: Element you want to detect collision.
+- `element2_`: Element where collision will be detected.
+
+This function returns the `<hr>` element (the line)
+ as an object.
 
 *Example:*
 
 ```html
-<connector-line from="myButton1" to="myButton2"> </connector-line>
-
 <div>
     <button id="myButton1"> Btn 1 </button>
     <button id="myButton2"> Btn 2 </button>
 </div>
+
+<script>
+    connectorLine("#myButton1", "myButton2");
+</script>
 
 <style>
     div{
@@ -407,130 +271,4 @@ It receives the following attributes:
 </style>
 ```
 
-This code will render some like this:
-
-<div style="width:200px; height:200px; position:relative;">
-    <button id="myButton1" style="position:absolute; top:0; left:0;"> Btn 1 </button>
-    <button id="myButton2" style="position:absolute; right:0; bottom:0;"> Btn 2 </button>
-    <hr id="" class="" style="position: absolute; margin: 0px; padding: 0px; transform-origin: left top 0px; top: 18.6px; left: 29.2px; width: 238.343px; transform: rotate(0.848335rad);">
-</div><br>
-
 Styles here are for positioning the buttons, but note that the connector line always will connect both elements.
-
-### Javascript Code Editor
-
-```html
-<editor name="myCodeEditor" input> </editor>
-
-<editor name="myCodeEditor" output> </editor>
-```
-
-This function creates an interactive editor in which you can write JavaScript code. Evaluates the code and shows the result in real time.
-
-It works having two editor tags: the first is the input (where we will write our code), and the second is the output (where we will see the results of the execution). This second one is optional, but if whe choose to have both, both has to have the same `name` attribute and value.
-
-It receives the following attributes:
-
-- `input` (boolean): The element that will act as editor code. We will write here.
-- `output` (boolean): The element that will display the results.
-
-
-### Slider
-
-```html
-<slider id="" interval="">
-    <!-- Multiple divs -->
-</slider>
-```
-
-This function creates a slider of elements in the DOM that scrolls automatically. The elements within the slider are arranged and scrolled continuously.
-
-It receives the following attribute:
-
-- `interval`: Time in milliseconds that each image will be displayed (optional) (default is 1000).
-
-> [!WARNING]
-> `id` is a **required** attribute for the correct working of the slider.
-
-*Example:*
-
-```html
-<slider id="mySlider">
-    <div><p>¡Hello!</p><button>click me</button></div>
-    <div><img src="assets/image1"/></div>
-    <div><img src="assets/image2"/></div>
-</slider>
-```
-
-Each display of the render doesn't necessarily have to be an image; can be full HTML content, as in the first div.
-
-
-
-### Radial Text
-
-```html
-<radial-text adjust-rotation="" angle="">
-    <!-- TEXT - Lorem ipsum dolor sit amet... -->
-</radial-text>
-```
-
-This function arranges and displays text radially on an element. You can adjust the rotation angle and other attributes.
-
-It receives the following (optional) attributes:
-
-- `adjust-rotation`: The point where the text starts. Default is 0.
-- `angle`: Defines the maximum angle that the text will occupy. Default is 360, meaning that the text will occupy the entire circle.
-
-*Example:*
-
-```html
-<radial-text>
-    Lorem ipsum dolor sit amet
-</radial-text>
-
-<radial-text angle="180">
-    Lorem ipsum dolor sit amet 180deg
-</radial-text>
-```
-
-This code will render some like this (assuming each radial-text has a width and height of 100px):
-<div style="width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;"><div style="position: absolute; height: inherit; transform: rotate(0deg);">L</div><div style="position: absolute; height: inherit; transform: rotate(12.8571deg);">o</div><div style="position: absolute; height: inherit; transform: rotate(25.7143deg);">r</div><div style="position: absolute; height: inherit; transform: rotate(38.5714deg);">e</div><div style="position: absolute; height: inherit; transform: rotate(51.4286deg);">m</div><div style="position: absolute; height: inherit; transform: rotate(64.2857deg);"> </div><div style="position: absolute; height: inherit; transform: rotate(77.1429deg);">i</div><div style="position: absolute; height: inherit; transform: rotate(90deg);">p</div><div style="position: absolute; height: inherit; transform: rotate(102.857deg);">s</div><div style="position: absolute; height: inherit; transform: rotate(115.714deg);">u</div><div style="position: absolute; height: inherit; transform: rotate(128.571deg);">m</div><div style="position: absolute; height: inherit; transform: rotate(141.429deg);"> </div><div style="position: absolute; height: inherit; transform: rotate(154.286deg);">d</div><div style="position: absolute; height: inherit; transform: rotate(167.143deg);">o</div><div style="position: absolute; height: inherit; transform: rotate(180deg);">l</div><div style="position: absolute; height: inherit; transform: rotate(192.857deg);">o</div><div style="position: absolute; height: inherit; transform: rotate(205.714deg);">r</div><div style="position: absolute; height: inherit; transform: rotate(218.571deg);"> </div><div style="position: absolute; height: inherit; transform: rotate(231.429deg);">s</div><div style="position: absolute; height: inherit; transform: rotate(244.286deg);">i</div><div style="position: absolute; height: inherit; transform: rotate(257.143deg);">t</div><div style="position: absolute; height: inherit; transform: rotate(270deg);"> </div><div style="position: absolute; height: inherit; transform: rotate(282.857deg);">a</div><div style="position: absolute; height: inherit; transform: rotate(295.714deg);">m</div><div style="position: absolute; height: inherit; transform: rotate(308.571deg);">e</div><div style="position: absolute; height: inherit; transform: rotate(321.429deg);">t</div><div style="position: absolute; height: inherit; transform: rotate(334.286deg);">.</div><div style="position: absolute; height: inherit; transform: rotate(347.143deg);"> </div></div>
-<br><div angle="180" style="width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;"><div style="position: absolute; height: inherit; transform: rotate(0deg);">L</div><div style="position: absolute; height: inherit; transform: rotate(9.47368deg);">o</div><div style="position: absolute; height: inherit; transform: rotate(18.9474deg);">r</div><div style="position: absolute; height: inherit; transform: rotate(28.4211deg);">e</div><div style="position: absolute; height: inherit; transform: rotate(37.8947deg);">m</div><div style="position: absolute; height: inherit; transform: rotate(47.3684deg);"> </div><div style="position: absolute; height: inherit; transform: rotate(56.8421deg);">i</div><div style="position: absolute; height: inherit; transform: rotate(66.3158deg);">p</div><div style="position: absolute; height: inherit; transform: rotate(75.7895deg);">s</div><div style="position: absolute; height: inherit; transform: rotate(85.2632deg);">u</div><div style="position: absolute; height: inherit; transform: rotate(94.7368deg);">m</div><div style="position: absolute; height: inherit; transform: rotate(104.211deg);"> </div><div style="position: absolute; height: inherit; transform: rotate(113.684deg);">1</div><div style="position: absolute; height: inherit; transform: rotate(123.158deg);">8</div><div style="position: absolute; height: inherit; transform: rotate(132.632deg);">0</div><div style="position: absolute; height: inherit; transform: rotate(142.105deg);">d</div><div style="position: absolute; height: inherit; transform: rotate(151.579deg);">e</div><div style="position: absolute; height: inherit; transform: rotate(161.053deg);">g</div><div style="position: absolute; height: inherit; transform: rotate(170.526deg);"> </div></div>
-<div angle="180" adjust-rotation="90deg" style="width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;"><div style="position: absolute; height: inherit; transform: rotate(90deg);">L</div><div style="position: absolute; height: inherit; transform: rotate(99.4737deg);">o</div><div style="position: absolute; height: inherit; transform: rotate(108.947deg);">r</div><div style="position: absolute; height: inherit; transform: rotate(118.421deg);">e</div><div style="position: absolute; height: inherit; transform: rotate(127.895deg);">m</div><div style="position: absolute; height: inherit; transform: rotate(137.368deg);"> </div><div style="position: absolute; height: inherit; transform: rotate(146.842deg);">i</div><div style="position: absolute; height: inherit; transform: rotate(156.316deg);">p</div><div style="position: absolute; height: inherit; transform: rotate(165.789deg);">s</div><div style="position: absolute; height: inherit; transform: rotate(175.263deg);">u</div><div style="position: absolute; height: inherit; transform: rotate(184.737deg);">m</div><div style="position: absolute; height: inherit; transform: rotate(194.211deg);"> </div><div style="position: absolute; height: inherit; transform: rotate(203.684deg);">1</div><div style="position: absolute; height: inherit; transform: rotate(213.158deg);">8</div><div style="position: absolute; height: inherit; transform: rotate(222.632deg);">0</div><div style="position: absolute; height: inherit; transform: rotate(232.105deg);">d</div><div style="position: absolute; height: inherit; transform: rotate(241.579deg);">e</div><div style="position: absolute; height: inherit; transform: rotate(251.053deg);">g</div><div style="position: absolute; height: inherit; transform: rotate(260.526deg);"> </div></div>
-
-
-### Draggable elements
-```html
-<drag target="" fn-hover="" fn-release="">
-    <!-- content -->
-</drag>
-```
-
-This function allows an element to be draggable and defines functions for scroll and drop events.
-
-It receives the following (optional) attributes:
-
-- `target`: Element that will act as the drop zone.
-- `fn-hover`: Function that will execute while the draggable element is over the drop zone, but not released yet.
-- `fn-release`: Function that will execute when the draggable element is finally released on the drop zone.
-
-*Example:*
-
-```html
-<draggable target="myTarget" fn-hover="console.log('over the target')" fn-release="console.log('released in target')">
-    Drag me!
-</draggable>
-
-<div id="myTarget"> Target </div>
-```
-
-### Run all tags
-
-```js
-htjs();
-```
-
-This function performs all parsing and processing functions on HTML elements with custom attributes, such as `if`, `for`, `connectorLine`, `editor`, `slider`, `radial-text`, `assistext`, and ` drag`.
-
-> [!IMPORTANT]  
-> You should call this function to render / execute the HTML tags.
