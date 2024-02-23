@@ -1,6 +1,6 @@
 {
     "name": "alexa-reactor-core",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "description": "Javascript codebase by Alexa-Kitsune | 10Ne-V",
     "main": "core.js",
     "scripts": {
